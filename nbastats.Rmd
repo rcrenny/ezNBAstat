@@ -1,0 +1,44 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library("nbastatR")
+lebron <- nba_player_ids("Kevin Durant")
+df_lebron <- players_tables(players = NULL, player_ids = lebron,
+  tables = "year over year",
+  measures = "Advanced", modes = "Totals",
+  season_types = "Regular Season", playoff_rounds = NA,
+  is_plus_minus = F, is_rank = F,
+  is_pace_adjusted = F, outcomes = NA, locations = NA, months = NA,
+  season_segments = NA, date_from = NA, date_to = NA,
+  opponent_ids = NA, vs_confs = NA, vs_divisions = NA,
+  game_segments = NA, periods = NA, shot_clocks = NA,
+  last_n_games = NA, assign_to_environment = T,
+  return_message = F)
+
+r <- nrow(dataYearOverYearPlayerAdvanced)
+r2 <- 2019 - r + 1
+dataYearOverYearPlayerAdvanced$yearSeason <- c(2019:r2)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```{r}
+library(tidyverse)
+```
+
+```{r}
+ggplot(dataYearOverYearPlayerAdvanced)+
+  geom_line(aes(x=yearSeason,y=ortg)) +
+  labs(x="Year", y="Offensive Rating")
+```
+
